@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 25px;
+        }
+        img{
+            width: 130px;
+            height: 160px;
+        }
+        #navbar{
+            background-color: rgb(8, 6, 120);
+            color: white;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 25px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="first"></h1>
+    <h1 id="second"></h1>
+    <button> <a href="index.html">homepage</a></button>
+    <div id="navbar"></div>
+    <div id="container"></div>
+</body>
+</html>
+
+     <script >
+        var a=0;
+        var b=0;
+    
+   
+    var data=JSON.parse(localStorage.getItem("database"))||[]
+
+    function mapping(data){
+        console.log(data);
+        data.map(function(el,idx){
+          
+
+    var row=document.createElement("div");
+    
+    var image=document.createElement("img");
+    image.src=el.image;
+   
+    var name=document.createElement("p");
+    name.innerText=el.name;
+
+    var course=document.createElement("p");
+    course.innerText=el.course;
+   
+    var unit=document.createElement("p");
+    unit.innerText=el.unit;
+    var batch=document.createElement("p");
+    batch.innerText=el.batch;
+
+    if(el.batch=="web16"){
+        a++;
+    }
+    else{
+        b++;
+    }
+  
+    let remove=document.createElement("button");
+    remove.innerText="remove";
+    remove.addEventListener("click",() => {
+                console.log(idx);
+                removeStu(idx,el);
+            });
+    row.append(image,name,course,unit,batch,remove);
+    document.getElementById("container").append(row)
+  let first = document.getElementById("first").innerText=`web 16 students are ${a}`;
+  let second=  document.getElementById("second").innerText=`web 17 students are ${b}`;
+    document.getElementById("navbar").append(row)
+
+        })
+    }
+    mapping(data)
+    let trash=JSON.parse(localStorage.getItem("trash"))||[]
+    function removeStu(ind,el){
+        data.splice(ind,1);
+        trash.push(el);
+        localStorage.setItem("trash",JSON.stringify(trash))
+       
+        localStorage.setItem("database",JSON.stringify(data))
+        window.location.reload()
+    }
+</script>
